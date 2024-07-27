@@ -1,27 +1,89 @@
-import Header from "../src/components/Header.js"
-import Balance from "../src/components/Balance.js"
-import IncomeExpenses from "../src/components/IncomeExpenses.js"
-import "../src/App.css"
-import TransList from "./components/TransList.js"
-import AddTrans from "./components/AddTrans.js"
-import { GlobalProvider } from "./Context/GlobalState.js"
+// src/App.js
+import React, { useState } from 'react';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import './App.css';
+import ShowTransactions from './components/ShowTransactions';
+import AddTransactionForm from './Forms/AddTransactionForm';
+import UpdateTransactionForm from './Forms/UpdateTransactionForm';
+import TransactionService from './Services/TransactionService';
+
+function App() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+  const [transactionToUpdate, setTransactionToUpdate] = useState(null);
+  const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false);
+
+  
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const openUpdateModal = (transaction) => {
+    setTransactionToUpdate(transaction);
+    setUpdateModalIsOpen(true);
+  };
+
+  const closeUpdateModal = () => {
+    setUpdateModalIsOpen(false);
+  };
+
+  const fetchTransactions = async () => {
+    const res = await TransactionService.getTransactions();
+    setTransactions(res.data);
+  };
+
+  const handleAddTransaction = async (newTransaction) => {
+    await TransactionService.addTransaction(newTransaction);
+    closeModal();
+
+  };
+
+  const handleUpdateTransaction = async (updatedTransaction) => {
+    await TransactionService.updateTransaction(updatedTransaction.id, updatedTransaction);
+    closeUpdateModal();
+  };
+
+  // const handleDeleteTransaction = async (transactionId) => {
+  //   await TransactionService.deleteTransaction(transactionId);
+  //   await fetchTransactions();
+  // };
 
 
-function App(){
-    return(
-        <>
-          <GlobalProvider>
-            <Header/>
-            <div className="container">
-              <Balance/>
-              <IncomeExpenses/>
-              <TransList/>
-              <AddTrans/>
-            </div>
-          </GlobalProvider>
-          
-        </>
-    );
+  return (
+    <div className="App">
+      <Router>
+            <header>
+            <button onClick={() => alert('Going back...')}>
+              &larr;
+            </button>
+            <h1>Recent Transactions</h1>
+            <button className="add-transaction-button" onClick={openModal}>
+              + Add Transaction
+            </button>
+          </header>
+          <Switch>
+          <Route path="/allTransactions" component ={ShowTransactions}></Route>
+              <Route path="/addTransaction" component ={AddTransactionForm}></Route>
+              {/* <ShowTransactions transactions={transactions} onUpdateTransaction={openUpdateModal} />
+              <AddTransactionForm
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                onSubmit={handleAddTransaction}
+              />
+              <UpdateTransactionForm
+                isOpen={updateModalIsOpen}
+                onRequestClose={closeUpdateModal}
+                onSubmit={handleUpdateTransaction}
+                transaction={transactionToUpdate}
+              /> */}
+          </Switch>
+      </Router>
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,25 @@
+after adding, the table dosent update automatically, have to refresh
+in the recent transactions bar: try and add a filter (Show this month, this year, all)
+in the recent transactions : instead of showing the date,show the month and under it show all transactions
+in the addtransaction popup, the previous add transaction dosen't clear after data is passed on to the db.
+Try to send data in any other form than String from react to Springboot(Update data in Springboot first)
+02-07-24
+START ML PART
+
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Oswald:wght@200..700&display=swap');
+
+.add-transaction-button {
+    font-family:"Roboto" ;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    left: 1600px;
+    width: 170px;
+    top: 85px;
+  }

@@ -76,7 +76,7 @@ const SignUp = () => {
 
 
       </form>
-      Already have an account?<Link to='/'>Login</Link> 
+      Already have an account?<Link to='/login'>Login</Link> 
     </div>
   )
 }
